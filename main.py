@@ -4,7 +4,7 @@ from flask import Flask, request, render_template, redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import os
-
+import time
 app = Flask(__name__)
 project_dir = os.path.dirname(os.path.abspath(__file__))
 database_file = "sqlite:///{}".format(os.path.join(project_dir, "todo.db"))
@@ -16,12 +16,16 @@ class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     text = db.Column(db.Text)
     done = db.Column(db.Boolean)
-    dateAdded = db.Column(db.DateTime, default=datetime.now())
+    dateRappel = db.Column(db.Date)
+    timeRappel = db.Column(db.Date)
+ 
+    #dateAdded = db.Column(db.DateTime, default=datetime.now())
     
-# create_time = db.Column(db.DateTime)
-#, nullable=False, default=datetime.now
-def create_note(text):
-    note = Note(text=text)
+
+def create_note(text,dateRappel,timeRappel):
+    dateRappel  = datetime.strptime(dateRappel,"%Y-%m-%d")
+    timeRappel  = datetime.strptime(timeRappel,"%H:%M")
+    note = Note(text=text, dateRappel=dateRappel, timeRappel= timeRappel)
     db.session.add(note)
     db.session.commit()
     db.session.refresh(note)
@@ -31,9 +35,10 @@ def read_notes():
     return db.session.query(Note).all()
 
 
-def update_note(note_id, text, done):
+def update_note(note_id, text, dateRappel,done):
     db.session.query(Note).filter_by(id=note_id).update({
         "text": text,
+        "dateRappel": dateRappel,
         "done": True if done == "on" else False
 
     })
@@ -48,7 +53,7 @@ def delete_note(note_id):
 @app.route("/", methods=["POST", "GET"])
 def view_index():
     if request.method == "POST":
-        create_note(request.form['text'])
+        create_note(request.form['text'] ,request.form['dateRappel'],request.form['timeRappel'] )
     return render_template("index.html", notes=read_notes())
 
 
@@ -101,9 +106,6 @@ def modifier_note_by_api():
     responses = {x.id: x.text for x in liste}
     return responses
 
-    liste=db.session.query(Note).all()
-    responses = {x.id: x.text for x in liste}
-    return responses
 
 
 

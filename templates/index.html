@@ -17,9 +17,10 @@
     <form method="POST" action="/">
          <div class="input-group mb-3">
               <input type="text" name="text" class="form-control" placeholder="Add a new TODO item">
-                  <div class="input-group-append" id="button-addon">
-                   <input type="time" id="start" name="dateRappel">
-                 
+              <input type="date"  name="dateRappel" class="form-control">
+              <input type="time"  name="timeRappel" class="form-control">
+
+                  <div class="input-group-append" id="button-addon"> 
                     <button class="btn btn-outline-primary" type="submit" value="update" style="background: rgba(95, 8, 84, 0.411);color: black;">Create new</button>
                   </div>
             </div>
@@ -39,7 +40,9 @@
               </div>
 
               <input type="text" title="{{note.dateAdded}}" value="{{note.text}}" name="text" class="form-control">
-              <input type="text" title="{{note.dateRappel}}" value="{{note.dateRappel}}" name="dateRappel" class="form-control">
+              <input type="text" title="" value="{{note.dateRappel}}" name="dateRappel" class="form-control">
+              <input type="text" title="" value="{{note.timeRappel}}" name="timeRappel" class="form-control">
+              
               <div class="input-group-append" id="button-addon2">
                 <button class="btn btn-outline-secondary" type="submit" value="update"  style="background: rgba(95, 8, 84, 0.411);color: black; hove">Update</button>
               </div>
