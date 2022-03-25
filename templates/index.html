@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Simple Flask TODO app in Python Flask</title>
+    <title>Simple Todolist</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script  type = "text/javascript">
       function redirect(link) {
@@ -13,12 +13,12 @@
 <div><h1 style="margin-left: 450px; margin-top: 20px; color: rgba(85, 10, 56, 0.705);" >Todolist Application</h1></div>
 
   <div class="container">
-    <h6 class="display-2" style="font-size: 20px; margin-top: 15px;">Add new task</h6>
+ <b>  <h6 class="display-2" style="font-size: 20px; margin-top: 15px;">Add new task</h6> </b> 
     <form method="POST" action="/">
          <div class="input-group mb-3">
-              <input type="text" name="text" class="form-control" placeholder="Add a new TODO item">
-              <input type="date"  name="dateRappel" class="form-control">
-              <input type="time"  name="timeRappel" class="form-control">
+              <input type="text" name="text" class="form-control" placeholder="Add a new TODO item" required>
+              <input type="date"  name="dateRappel" min="2022-03-25">
+            <!--  <input type="time"  name="timeRappel" class="form-control">-->
 
                   <div class="input-group-append" id="button-addon"> 
                     <button class="btn btn-outline-primary" type="submit" value="update" style="background: rgba(95, 8, 84, 0.411);color: black;">Create new</button>
@@ -40,8 +40,8 @@
               </div>
 
               <input type="text" title="{{note.dateAdded}}" value="{{note.text}}" name="text" class="form-control">
-              <input type="text" title="" value="{{note.dateRappel}}" name="dateRappel" class="form-control">
-              <input type="text" title="" value="{{note.timeRappel}}" name="timeRappel" class="form-control">
+              <input type="text" title="" value="{{note.dateRappel}}" name="dateRappel" >
+        <!--      <input type="text" title="" value="{{note.timeRappel}}" name="timeRappel" class="form-control">-->
               
               <div class="input-group-append" id="button-addon2">
                 <button class="btn btn-outline-secondary" type="submit" value="update"  style="background: rgba(95, 8, 84, 0.411);color: black; hove">Update</button>

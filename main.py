@@ -10,22 +10,30 @@ project_dir = os.path.dirname(os.path.abspath(__file__))
 database_file = "sqlite:///{}".format(os.path.join(project_dir, "todo.db"))
 app.config["SQLALCHEMY_DATABASE_URI"] = database_file
 db = SQLAlchemy(app)
-
+import http.client, urllib
+conn = http.client.HTTPSConnection("api.pushover.net:443")
+conn.request("POST", "/1/messages.json",
+  urllib.parse.urlencode({
+    "token": "aa5dj194ac43oz9251ji13w2z82w31",
+    "user": "uf5dmo6ycj73gb53swhd6s1eye7cqp",
+    "message": "hello world",
+  }), { "Content-type": "application/x-www-form-urlencoded" })
+conn.getresponse()
 
 class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     text = db.Column(db.Text)
     done = db.Column(db.Boolean)
     dateRappel = db.Column(db.Date)
-    timeRappel = db.Column(db.Date)
+    #timeRappel = db.Column(db.Date)
  
     #dateAdded = db.Column(db.DateTime, default=datetime.now())
     
 
-def create_note(text,dateRappel,timeRappel):
+def create_note(text,dateRappel):
     dateRappel  = datetime.strptime(dateRappel,"%Y-%m-%d")
-    timeRappel  = datetime.strptime(timeRappel,"%H:%M")
-    note = Note(text=text, dateRappel=dateRappel, timeRappel= timeRappel)
+    #timeRappel  = datetime.strptime(timeRappel,"%H:%M")
+    note = Note(text=text, dateRappel=dateRappel)
     db.session.add(note)
     db.session.commit()
     db.session.refresh(note)
@@ -35,10 +43,10 @@ def read_notes():
     return db.session.query(Note).all()
 
 
-def update_note(note_id, text, dateRappel,done):
+def update_note(note_id, text,done):
     db.session.query(Note).filter_by(id=note_id).update({
         "text": text,
-        "dateRappel": dateRappel,
+      
         "done": True if done == "on" else False
 
     })
@@ -49,11 +57,11 @@ def delete_note(note_id):
     db.session.query(Note).filter_by(id=note_id).delete()
     db.session.commit()
 
-
+#,request.form['timeRappel']
 @app.route("/", methods=["POST", "GET"])
 def view_index():
     if request.method == "POST":
-        create_note(request.form['text'] ,request.form['dateRappel'],request.form['timeRappel'] )
+        create_note(request.form['text'] ,request.form['dateRappel'] )
     return render_template("index.html", notes=read_notes())
 
 
